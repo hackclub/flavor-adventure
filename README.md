@@ -1,53 +1,29 @@
-![](https://github.com/thecodingmachine/workadventure/workflows/Continuous%20Integration/badge.svg) [![Discord](https://img.shields.io/discord/821338762134290432?label=Discord)](https://discord.gg/G6Xh9ZM9aR) ![Awesome](https://awesome.re/badge.svg)
+![](https://assets.hackclub.com/flag-orpheus-top.svg)
 
-![WorkAdventure office image](README-MAP.png)
-
-# WorkAdventure
+# Work Adventure Hack Club Fork
 
 
 WorkAdventure is a platform that allows you to design **fully customizable collaborative virtual worlds** (metaverse). 
-
-With your own avatar, you can **interact spontaneously** with your colleagues, clients, partners (using a **video-chat system**, triggered when you approach someone).
-Imagine **all types of immersive experiences** (recruitments, onboarding, trainings, digital workplace, internal/external events) on desktop, mobile or tablet.
-
-_The little plus? The platform is **GDPR** and **open source**!_
-
-**See more features for your [virtual office](https://workadventu.re/virtual-offices/virtual-meetings/?utm_source=github)!**
-
-**Pricing for our [SaaS version](https://workadventu.re/pricing/?utm_source=github)!**
-
-
-[![Workadventure live demo example](https://workadventu.re/wp-content/uploads/2024/02/Button-Live-Demo.png)](https://play.staging.workadventu.re/@/tcm/workadventure/wa-village/?utm_source=github)
-[![Workadventure Website](https://workadventu.re/wp-content/uploads/2024/02/Button-Website.png)](https://workadventu.re/?utm_source=github)
-
-
-###### Support our team!
-[![Discord Logo](https://workadventu.re/wp-content/uploads/2024/02/Icon-Discord.png)](https://discord.com/invite/G6Xh9ZM9aR)
-[![X Social Logo](https://workadventu.re/wp-content/uploads/2024/02/Icon-X.png)](https://twitter.com/Workadventure_)
-[![LinkedIn Logo](https://workadventu.re/wp-content/uploads/2024/02/Icon-LinkedIn.png)](https://www.linkedin.com/company/workadventu-re/)
-
-
-![Stats repo](https://github-readme-stats.vercel.app/api?username={username}&theme=transparent)
+This is a Hack Club Fork of Work Adventure, used for Flavor Town (https://github.com/hackclub/flavortown)
 
 
 
-## Community resources
+## Useful tools for contributing to flavortown:
 
-1. Want to build your own map, check out our **[map building documentation](https://docs.workadventu.re/map-building/)**
-2. Check out resources developed by the WorkAdventure community at **[awesome-workadventure](https://github.com/workadventure/awesome-workadventure)**
+1. want to build out the map? try the **[map building documentation](https://docs.workadventu.re/map-building/)**
+2. Many features are already developed by the WorkAdveture community: **[awesome-workadventure](https://github.com/workadventure/awesome-workadventure)**
 
 ## Setting up a production environment
 
-We support 2 ways to set up a production environment:
+there are 2 ways to set up a production environment:
 
 - using Docker Compose
 - or using a Helm chart for Kubernetes
 
 Please check the [Setting up a production environment](docs/others/self-hosting/install.md) guide for more information.
 
-> [!NOTE]
-> WorkAdventure also provides a [hosted version](https://workadventu.re/?utm_source=github) of the application. Using the hosted version is
-> the easiest way to get started and helps us to keep the project alive.
+We are using a helm chart for the production version of this codebase, but for local development this is overkill. Set out below are instructions for spinning up a local instance with docker compose.
+
 
 ## Setting up a development environment
 
@@ -65,7 +41,7 @@ Run:
 
 ```
 cp .env.template .env
-docker-compose up
+
 ```
 
 The environment will start with the OIDC mock server enabled by default.
@@ -92,3 +68,8 @@ Note: on some OSes, you will need to add this line to your `/etc/hosts` file:
 ### Troubleshooting
 
 See our [troubleshooting guide](docs/others/troubleshooting.md). 
+
+###### Go support Work Adventure:
+[![Discord Logo](https://workadventu.re/wp-content/uploads/2024/02/Icon-Discord.png)](https://discord.com/invite/G6Xh9ZM9aR)
+[![X Social Logo](https://workadventu.re/wp-content/uploads/2024/02/Icon-X.png)](https://twitter.com/Workadventure_)
+[![LinkedIn Logo](https://workadventu.re/wp-content/uploads/2024/02/Icon-LinkedIn.png)](https://www.linkedin.com/company/workadventu-re/)
