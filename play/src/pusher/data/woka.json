@@ -6,148 +6,28 @@
                 "position": 0,
                 "textures": [
                     {
-                        "id": "male1",
-                        "name": "male1",
-                        "url": "resources/characters/pipoya/Male 01-1.png",
-                        "position": 0
+                        "id": "heidi_black",
+                        "name": "Heidi (Black)",
+                        "url": "resources/characters/pipoya/spr_heidi_black.png",
+                        "position": 24
                     },
                     {
-                        "id": "male2",
-                        "name": "male2",
-                        "url": "resources/characters/pipoya/Male 02-2.png",
-                        "position": 1
+                        "id": "heidi_color",
+                        "name": "Heidi (Color)",
+                        "url": "resources/characters/pipoya/spr_heidi_color.png",
+                        "position": 25
                     },
                     {
-                        "id": "male3",
-                        "name": "male3",
-                        "url": "resources/characters/pipoya/Male 03-4.png",
-                        "position": 2
+                        "id": "orpheus_black",
+                        "name": "Orpheus (Black)",
+                        "url": "resources/characters/pipoya/spr_orpheus_black.png",
+                        "position": 26
                     },
                     {
-                        "id": "male4",
-                        "name": "male4",
-                        "url": "resources/characters/pipoya/Male 09-1.png",
-                        "position": 3
-                    },
-                    {
-                        "id": "male5",
-                        "name": "male5",
-                        "url": "resources/characters/pipoya/Male 10-3.png",
-                        "position": 4
-                    },
-                    {
-                        "id": "male6",
-                        "name": "male6",
-                        "url": "resources/characters/pipoya/Male 17-2.png",
-                        "position": 5
-                    },
-                    {
-                        "id": "male7",
-                        "name": "male7",
-                        "url": "resources/characters/pipoya/Male 18-1.png",
-                        "position": 6
-                    },
-                    {
-                        "id": "male8",
-                        "name": "male8",
-                        "url": "resources/characters/pipoya/Male 16-4.png",
-                        "position": 7
-                    },
-                    {
-                        "id": "male9",
-                        "name": "male9",
-                        "url": "resources/characters/pipoya/Male 07-2.png",
-                        "position": 8
-                    },
-                    {
-                        "id": "male10",
-                        "name": "male10",
-                        "url": "resources/characters/pipoya/Male 05-3.png",
-                        "position": 9
-                    },
-                    {
-                        "id": "male11",
-                        "name": "male11",
-                        "url": "resources/characters/pipoya/Teacher male 02.png",
-                        "position": 10
-                    },
-                    {
-                        "id": "male12",
-                        "name": "male12",
-                        "url": "resources/characters/pipoya/su4 Student male 12.png",
-                        "position": 11
-                    },
-                    {
-                        "id": "female1",
-                        "name": "female1",
-                        "url": "resources/characters/pipoya/Female 01-1.png",
-                        "position": 12
-                    },
-                    {
-                        "id": "female2",
-                        "name": "female2",
-                        "url": "resources/characters/pipoya/Female 02-2.png",
-                        "position": 13
-                    },
-                    {
-                        "id": "female3",
-                        "name": "female3",
-                        "url": "resources/characters/pipoya/Female 03-4.png",
-                        "position": 14
-                    },
-                    {
-                        "id": "female4",
-                        "name": "female4",
-                        "url": "resources/characters/pipoya/Female 09-1.png",
-                        "position": 15
-                    },
-                    {
-                        "id": "female5",
-                        "name": "female5",
-                        "url": "resources/characters/pipoya/Female 10-3.png",
-                        "position": 16
-                    },
-                    {
-                        "id": "female6",
-                        "name": "female6",
-                        "url": "resources/characters/pipoya/Female 17-2.png",
-                        "position": 17
-                    },
-                    {
-                        "id": "female7",
-                        "name": "female7",
-                        "url": "resources/characters/pipoya/Female 18-1.png",
-                        "position": 18
-                    },
-                    {
-                        "id": "female8",
-                        "name": "female8",
-                        "url": "resources/characters/pipoya/Female 16-4.png",
-                        "position": 19
-                    },
-                    {
-                        "id": "female9",
-                        "name": "female9",
-                        "url": "resources/characters/pipoya/Female 07-2.png",
-                        "position": 20
-                    },
-                    {
-                        "id": "female10",
-                        "name": "female10",
-                        "url": "resources/characters/pipoya/Female 05-3.png",
-                        "position": 21
-                    },
-                    {
-                        "id": "female11",
-                        "name": "female11",
-                        "url": "resources/characters/pipoya/Teacher fmale 02.png",
-                        "position": 22
-                    },
-                    {
-                        "id": "female12",
-                        "name": "female12",
-                        "url": "resources/characters/pipoya/su4 Student fmale 12.png",
-                        "position": 23
+                        "id": "orpheus_color",
+                        "name": "Orpheus (Color)",
+                        "url": "resources/characters/pipoya/spr_orpheus_color.png",
+                        "position": 27
                     }
                 ]
             }
