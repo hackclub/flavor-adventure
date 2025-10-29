@@ -44,6 +44,15 @@ export const CHARACTER_BODY_HEIGHT = 16;
 export const CHARACTER_BODY_OFFSET_X = 0;
 export const CHARACTER_BODY_OFFSET_Y = 8;
 
+// resize custom wokas
+const WOKA_SCALE_OVERRIDES: Record<string, number> = {
+    // Orpheus has a chef's hat that makes her tall
+    heidi_black: 1.2,
+    heidi_color: 1.2,
+    orpheus_black: 1.3,
+    orpheus_color: 1.3,
+};
+
 export abstract class Character extends Container implements OutlineableInterface {
     private bubble: RenderTexture | null | DOMElement = null;
     private playerNameText: Text | undefined;
@@ -362,6 +371,13 @@ export abstract class Character extends Container implements OutlineableInterfac
                 throw new CharacterTextureError(`Texture "${texture}" not found`);
             }
             const sprite = new Sprite(this.scene, 0, 0, texture, frame);
+            
+            // Apply scale override if one exists for this texture
+            const scaleOverride = WOKA_SCALE_OVERRIDES[texture];
+            if (scaleOverride !== undefined) {
+                sprite.setScale(scaleOverride);
+            }
+            
             this.add(sprite);
             getPlayerAnimations(texture).forEach((d) => {
                 if (!this.scene.anims.exists(d.key)) {
