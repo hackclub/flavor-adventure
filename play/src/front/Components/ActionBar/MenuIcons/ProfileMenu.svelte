@@ -40,6 +40,7 @@
     import { EnableCameraScene, EnableCameraSceneName } from "../../../Phaser/Login/EnableCameraScene";
     import { createFloatingUiActions } from "../../../Utils/svelte-floatingui";
     import ActionBarButton from "../ActionBarButton.svelte";
+    import { userHasPetsStore } from "../../../Stores/GameStore";
     import ContextualMenuItems from "./ContextualMenuItems.svelte";
     import HeaderMenuItem from "./HeaderMenuItem.svelte";
     import { IconLogout } from "@wa-icons";
@@ -200,20 +201,22 @@
                 >
                     <Woka userId={-1} placeholderSrc="" customWidth="26px" />
                 </ActionBarButton>
-                <ActionBarButton
-                    label={$LL.actionbar.companion()}
-                    on:click={() => {
-                        openEditCompanionScene();
-                        analyticsClient.editCompanion();
-                    }}
-                >
-                    <Companion
-                        userId={-1}
-                        placeholderSrc="../static/images/default-companion.png"
-                        width="26px"
-                        height="26px"
-                    />
-                </ActionBarButton>
+                {#if $userHasPetsStore}
+                    <ActionBarButton
+                        label={$LL.actionbar.companion()}
+                        on:click={() => {
+                            openEditCompanionScene();
+                            analyticsClient.editCompanion();
+                        }}
+                    >
+                        <Companion
+                            userId={-1}
+                            placeholderSrc="../static/images/default-companion.png"
+                            width="26px"
+                            height="26px"
+                        />
+                    </ActionBarButton>
+                {/if}
                 <!--                                <button-->
                 <!--                                    class="group flex p-2 gap-2 items-center hover:bg-white/10 transition-all cursor-pointer font-bold text-sm w-full pointer-events-auto text-left rounded"-->
                 <!--                                >-->

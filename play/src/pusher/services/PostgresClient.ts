@@ -87,25 +87,38 @@ class PostgresClient {
         }
     }
 
-    async upsertUser(slackId: string, givenName?: string, email?: string): Promise<void> {
+    async upsertUser(
+        slackId: string,
+        givenName?: string,
+        email?: string
+    ): Promise<{ isAdmin: boolean; hasPets: boolean }> {
         if (!this.isEnabled()) {
-            return;
+            return { isAdmin: false, hasPets: false };
         }
 
         try {
-            await this.query(
+            const result = (await this.query(
                 `INSERT INTO users (slack_id, given_name, email, updated_at)
                 VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
                 ON CONFLICT (slack_id) 
                 DO UPDATE SET 
                     given_name = COALESCE(EXCLUDED.given_name, users.given_name),
                     email = COALESCE(EXCLUDED.email, users.email),
-                    updated_at = CURRENT_TIMESTAMP`,
+                    updated_at = CURRENT_TIMESTAMP
+                RETURNING is_admin, is_banned, has_unlocked_pets`,
                 [slackId, givenName, email]
-            );
-            console.info("[PostgresClient] User upserted:", slackId);
+            )) as { rows: Array<{ is_admin: boolean; is_banned: boolean; has_unlocked_pets: boolean }> };
+
+            const user = result.rows[0];
+            const isAdmin = user?.is_admin || false;
+            const isBanned = user?.is_banned || false;
+            const hasPets = user?.has_unlocked_pets || false;
+
+            console.info("[PostgresClient] User upserted:", slackId, { isAdmin, isBanned, hasPets });
+            return { isAdmin, hasPets };
         } catch (error) {
             console.error("[PostgresClient] Failed to upsert user:", error);
+            return { isAdmin: false, hasPets: false };
         }
     }
 

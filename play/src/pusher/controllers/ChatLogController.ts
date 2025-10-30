@@ -4,7 +4,7 @@ import { postgresClient } from "../services/PostgresClient";
 import { CHAT_LOG_SECRET } from "../enums/EnvironmentVariable";
 
 const ChatLogSchema = z.object({
-    type: z.enum(["matrix", "proximity", "say", "think"]),
+    type: z.enum(["matrix", "proximity"]),
     message: z.string().min(1),
     author: z.string().optional(), // sender ID
     playerName: z.string().optional(),
@@ -18,7 +18,7 @@ const ChatLogSchema = z.object({
 export class ChatLogController {
     constructor(app: Application) {
         console.info("[ChatLogController] Initializing...");
-        console.info("[ChatLogController] CHAT_LOG_SECRET configured:", !!CHAT_LOG_SECRET);
+        //console.info("[ChatLogController] CHAT_LOG_SECRET configured:", !!CHAT_LOG_SECRET);
 
         postgresClient.init().catch((e: unknown) => console.error("[ChatLogController] Postgres init error:", e));
 

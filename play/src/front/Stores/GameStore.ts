@@ -10,6 +10,7 @@ export const requestVisitCardsStore = writable<string | null>(null);
 
 export const userIsAdminStore = writable(false);
 export const userIsEditorStore = writable(false);
+export const userHasPetsStore = writable(false);
 
 export const userIsJitsiDominantSpeakerStore = writable(false);
 

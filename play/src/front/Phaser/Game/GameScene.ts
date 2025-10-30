@@ -86,6 +86,7 @@ import {
     jitsiParticipantsCountStore,
     userIsAdminStore,
     userIsEditorStore,
+    userHasPetsStore,
     userIsJitsiDominantSpeakerStore,
 } from "../../Stores/GameStore";
 import {
@@ -1742,6 +1743,7 @@ export class GameScene extends DirtyScene {
                 playersStore.connectToRoomConnection(this.connection);
                 userIsAdminStore.set(this.connection.hasTag("admin"));
                 userIsEditorStore.set(this.connection.hasTag("editor"));
+                userHasPetsStore.set(this.connection.hasTag("pets"));
 
                 // The userJoinedMessageStream stream is completed in the RoomConnection. No need to unsubscribe.
                 //eslint-disable-next-line rxjs/no-ignored-subscription, svelte/no-ignored-unsubscribe

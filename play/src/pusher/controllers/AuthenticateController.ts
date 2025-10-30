@@ -319,25 +319,42 @@ export class AuthenticateController extends BaseHttpController {
                 allClaims: Object.keys(userInfo),
             });
 
+            // Upsert user to database and check admin/pets status
+            let isAdmin = false;
+            let hasPets = false;
+            if (userInfo.sub) {
+                try {
+                    const userPerms = await postgresClient.upsertUser(
+                        userInfo.sub, // Slack user ID
+                        userInfo.username,
+                        userInfo.email
+                    );
+                    isAdmin = userPerms.isAdmin;
+                    hasPets = userPerms.hasPets;
+                } catch (e: unknown) {
+                    console.error("[AuthenticateController] Failed to upsert user:", e);
+                }
+            }
+
+            // Add tags based on database permissions
+            const tags = [...(userInfo?.tags || [])];
+            if (isAdmin && !tags.includes("admin")) {
+                tags.push("admin");
+                console.info("[AuthenticateController] Admin privileges granted to:", userInfo.sub);
+            }
+            if (hasPets && !tags.includes("pets")) {
+                tags.push("pets");
+                console.info("[AuthenticateController] Pets unlocked for:", userInfo.sub);
+            }
+
             const authToken = jwtTokenManager.createAuthToken(
                 email,
                 userInfo?.access_token,
                 userInfo?.username,
                 userInfo?.locale,
-                userInfo?.tags,
+                tags,
                 email ? matrixProvider.getBareMatrixIdFromEmail(email) : undefined
             );
-
-            // Upsert user to database
-            if (userInfo.sub) {
-                postgresClient
-                    .upsertUser(
-                        userInfo.sub, // Slack user ID
-                        userInfo.username,
-                        userInfo.email
-                    )
-                    .catch((e: unknown) => console.error("[AuthenticateController] Failed to upsert user:", e));
-            }
 
             // Matrix SSO redirect disabled - skip directly to play redirect
 
