@@ -2856,12 +2856,26 @@ ${escapedMessage}
             // The sharedVariablesManager is not instantiated before the connection is established. So we need to wait
             // for the connection to send back the answer.
             await this.connectionAnswerPromiseDeferred.promise;
-            return {
+            const token = localUserStore.getAuthToken();
+            let slackId: string | undefined;
+            console.log("[GameScene] getState - authToken exists:", !!token);
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split(".")[1]));
+                    slackId = payload.slackId;
+                    console.log("[GameScene] getState - decoded slackId:", slackId);
+                } catch (e) {
+                    console.warn("Could not decode JWT for slackId", e);
+                }
+            }
+
+            const gameState = {
                 playerId: this.connection?.getUserId(),
                 mapUrl: this.mapUrlFile,
                 hashParameters: urlManager.getHashParameters(),
                 startLayerName: this.startPositionCalculator.getStartPositionName() ?? undefined,
                 uuid: localUserStore.getLocalUser()?.uuid,
+                slackId,
                 nickname: this.playerName,
                 language: get(locale),
                 roomId: this.roomUrl,
@@ -2874,6 +2888,8 @@ ${escapedMessage}
                 iframeId: source ? iframeListener.getUIWebsiteIframeIdFromSource(source) : undefined,
                 isLogged: this.room.isLogged,
             };
+            console.log("[GameScene] getState - returning slackId:", gameState.slackId);
+            return gameState;
         });
         this.iframeSubscriptionList.push(
             iframeListener.setTilesStream.subscribe((eventTiles) => {

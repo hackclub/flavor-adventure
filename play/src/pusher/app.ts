@@ -30,6 +30,7 @@ import { WokaService } from "./services/WokaService";
 import { UserController } from "./controllers/UserController";
 import { MatrixRoomAreaController } from "./controllers/MatrixRoomAreaController";
 import { ChatLogController } from "./controllers/ChatLogController";
+import { PlayerInfoController } from "./controllers/PlayerInfoController";
 
 class App {
     private readonly app: Application;
@@ -104,6 +105,7 @@ class App {
         new UserController(this.app);
         new MatrixRoomAreaController(this.app);
         new ChatLogController(this.app);
+        new PlayerInfoController(this.app);
 
         const staticOptions = {
             extensions: [

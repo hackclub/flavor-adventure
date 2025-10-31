@@ -43,6 +43,12 @@ export const setUuid = (_uuid: string | undefined) => {
     uuid = _uuid;
 };
 
+let slackId: string | undefined;
+
+export const setSlackId = (_slackId: string | undefined) => {
+    slackId = _slackId;
+};
+
 let isLogged: boolean | undefined;
 
 export const setIsLogged = (_isLogged: boolean | undefined) => {
@@ -123,6 +129,16 @@ export class WorkadventurePlayerCommands extends IframeApiContribution<Workadven
             );
         }
         return uuid;
+    }
+
+    /**
+     * Get the player Slack ID.
+     * Important: You need to wait for the end of the initialization before accessing.
+     *
+     * @returns {string|undefined} Player Slack ID
+     */
+    get slackId(): string | undefined {
+        return slackId;
     }
 
     /**

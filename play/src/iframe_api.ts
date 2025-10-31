@@ -21,6 +21,7 @@ import player, {
     setTags,
     setUserRoomToken,
     setUuid,
+    setSlackId,
     setIsLogged,
     setPlayerId,
 } from "./front/Api/Iframe/player";
@@ -104,6 +105,7 @@ const initPromise = queryWorkadventure(
     setMapURL(gameState.mapUrl);
     setTags(gameState.tags);
     setUuid(gameState.uuid);
+    setSlackId(gameState.slackId);
     setUserRoomToken(gameState.userRoomToken);
     setMetadata(gameState.metadata);
     setIframeId(gameState.iframeId);

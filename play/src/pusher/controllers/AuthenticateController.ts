@@ -353,7 +353,8 @@ export class AuthenticateController extends BaseHttpController {
                 userInfo?.username,
                 userInfo?.locale,
                 tags,
-                email ? matrixProvider.getBareMatrixIdFromEmail(email) : undefined
+                email ? matrixProvider.getBareMatrixIdFromEmail(email) : undefined,
+                userInfo?.sub // Slack ID
             );
 
             // Matrix SSO redirect disabled - skip directly to play redirect

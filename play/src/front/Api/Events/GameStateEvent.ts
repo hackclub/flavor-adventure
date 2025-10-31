@@ -8,6 +8,7 @@ export const isGameStateEvent = z.object({
     language: z.string().optional(),
     playerId: z.number().optional(),
     uuid: z.string().optional(),
+    slackId: z.string().optional(),
     startLayerName: z.string().optional(),
     tags: z.string().array(),
     variables: z.unknown(), // Todo : Typing
