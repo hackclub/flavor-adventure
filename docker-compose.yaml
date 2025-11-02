@@ -413,12 +413,12 @@ services:
             "Claims": [
               {
                 "Type": "name",
-                "Value": "John Doe",
+                "Value": "Bart Forgler",
                 "ValueType": "string",
               },
               {
                 "Type": "email",
-                "Value": "john.doe@example.com",
+                "Value": "bartForgler@hackclub.com",
                 "ValueType": "string"
               },
               {
@@ -513,6 +513,7 @@ services:
       SYNAPSE_REPORT_STATS: "yes"
       MATRIX_ADMIN_USER: admin
       MATRIX_ADMIN_PASSWORD: MySecretPassword
+      #this is not used
       JWT_SECRET: "$SECRET_KEY"
 
 #  coturn:
