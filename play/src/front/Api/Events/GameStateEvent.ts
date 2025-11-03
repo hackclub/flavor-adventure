@@ -11,15 +11,12 @@ export const isGameStateEvent = z.object({
     slackId: z.string().optional(),
     startLayerName: z.string().optional(),
     tags: z.string().array(),
-    variables: z.unknown(), // Todo : Typing
-    playerVariables: z.unknown(), // Todo : Typing
+    variables: z.unknown(),
+    playerVariables: z.unknown(),
     userRoomToken: z.string().optional(),
     metadata: z.unknown().optional(),
     iframeId: z.string().optional(),
     isLogged: z.boolean().optional().default(false),
 });
 
-/**
- * A message sent from the game to the iFrame when the gameState is received by the script
- */
 export type GameStateEvent = z.infer<typeof isGameStateEvent>;
