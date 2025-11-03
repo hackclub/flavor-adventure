@@ -3,7 +3,7 @@ import z from "zod";
 import { ADMIN_SOCKETS_TOKEN, SECRET_KEY } from "../enums/EnvironmentVariable";
 
 export const AuthTokenData = z.object({
-    identifier: z.string(), //will be a email if logged in or an uuid if anonymous
+    identifier: z.string(), //will be a email
     accessToken: z.string().optional(),
     username: z.string().optional(),
     locale: z.string().optional(),

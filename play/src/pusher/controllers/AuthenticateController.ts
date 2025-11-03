@@ -133,8 +133,8 @@ export class AuthenticateController extends BaseHttpController {
                 query.providerScopes
             );
             res.cookie("playUri", query.playUri, {
-                httpOnly: true, // dont let browser javascript access cookie ever
-                secure: req.secure, // only use cookie over https
+                httpOnly: true,
+                secure: req.secure, // enforce https
             });
 
             res.redirect(loginUri);
@@ -194,7 +194,7 @@ export class AuthenticateController extends BaseHttpController {
                 const authTokenData: AuthTokenData = jwtTokenManager.verifyJWTToken(token, false);
 
                 //Get user data from Admin Back Office
-                //This is very important to create User Local in LocalStorage in WorkAdventure
+
                 const resUserData = await adminService.fetchMemberDataByUuid(
                     authTokenData.identifier,
                     authTokenData.accessToken,
@@ -219,7 +219,7 @@ export class AuthenticateController extends BaseHttpController {
                         authToken: token,
                         username: authTokenData?.username,
                         locale: authTokenData?.locale,
-                        // TODO: replace ... with each property
+
                         ...resUserData,
                         matrixUserId: authTokenData?.matrixUserId,
                         matrixServerUrl: MATRIX_PUBLIC_URI,
@@ -235,7 +235,7 @@ export class AuthenticateController extends BaseHttpController {
                         locale: authTokenData?.locale,
                         matrixUserId: authTokenData?.matrixUserId,
                         matrixServerUrl: (resCheckTokenAuth.matrix_url as string | undefined) ?? MATRIX_PUBLIC_URI,
-                        // TODO: replace ... with each property
+
                         ...resUserData,
                         ...resCheckTokenAuth,
                     } satisfies MeResponse);
@@ -311,14 +311,6 @@ export class AuthenticateController extends BaseHttpController {
                 throw new Error("No email in the response");
             }
 
-            // Debug logging for Slack OAuth
-            console.log("Slack userInfo received:", {
-                email: userInfo.email,
-                username: userInfo.username,
-                sub: userInfo.sub,
-                allClaims: Object.keys(userInfo),
-            });
-
             // Upsert user to database and check admin/pets status
             let isAdmin = false;
             let hasPets = false;
@@ -336,7 +328,7 @@ export class AuthenticateController extends BaseHttpController {
                 }
             }
 
-            // Add tags based on database permissions
+            // Add tags based on database perms
             const tags = [...(userInfo?.tags || [])];
             if (isAdmin && !tags.includes("admin")) {
                 tags.push("admin");
@@ -360,7 +352,7 @@ export class AuthenticateController extends BaseHttpController {
             // Matrix SSO redirect disabled - skip directly to play redirect
 
             res.clearCookie("playUri");
-            // FIXME: possibly redirect to Admin instead.
+
             res.redirect(playUri + "?token=" + encodeURIComponent(authToken));
             return;
         });
@@ -460,6 +452,7 @@ export class AuthenticateController extends BaseHttpController {
      *                   type: array
      *                   description: The list of messages to be displayed when the user logs?
      *                   example: ???
+     *                  Note the above is from the original devs, not hack club, not sure what they were cooking
      */
     private register(): void {
         this.app.options("/register", (req, res) => {

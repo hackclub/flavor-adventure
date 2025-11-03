@@ -20,7 +20,7 @@ export class PlayerInfoController {
             const authData = jwtTokenManager.verifyJWTToken(token);
             const email = authData.identifier;
 
-            // Query database to get Slack ID from email
+            // Query database to get Slack ID from email (probably really slow :())
             if (!postgresClient.isEnabled()) {
                 return res.status(503).json({ error: "database_not_available" });
             }
