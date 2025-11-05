@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'workadventure-play'
+    authorization:
+      credentials: ${PROMETHEUS_AUTHORIZATION_TOKEN}
+    static_configs:
+      - targets: ['play:3000']

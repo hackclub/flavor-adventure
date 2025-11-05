@@ -99,11 +99,11 @@ services:
       PUBLIC_MAP_STORAGE_URL: "http://map-storage.workadventure.localhost"
       INTERNAL_MAP_STORAGE_URL: "http://map-storage:3000"
       ENABLE_OPENAPI_ENDPOINT: "true"
-      START_ROOM_URL: "$START_ROOM_URL"
-      ENABLE_CHAT: "false"
-      ENABLE_CHAT_UPLOAD: "false"
-      ENABLE_CHAT_ONLINE_LIST: "false"
-      ENABLE_CHAT_DISCONNECTED_LIST: "false"
+      START_ROOM_URL: "${START_ROOM_URL:-/_/global/maps.workadventure.localhost/flavor/courtyard.tmj}"
+      ENABLE_CHAT: "${ENABLE_CHAT:-false}"
+      ENABLE_CHAT_UPLOAD: "${ENABLE_CHAT_UPLOAD:-false}"
+      ENABLE_CHAT_ONLINE_LIST: "${ENABLE_CHAT_ONLINE_LIST:-false}"
+      ENABLE_CHAT_DISCONNECTED_LIST: "${ENABLE_CHAT_DISCONNECTED_LIST:-false}"
       # Chat logging
       CHAT_LOG_SECRET: "${CHAT_LOG_SECRET:-your-secret-token-here}"
       # PostgreSQL database for chat logs (use DATABASE_URL or individual vars)
@@ -113,6 +113,7 @@ services:
       POSTGRES_DATABASE: "${POSTGRES_DATABASE:-}"
       POSTGRES_USER: "${POSTGRES_USER:-}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-}"
+      PROMETHEUS_AUTHORIZATION_TOKEN: "$PROMETHEUS_AUTHORIZATION_TOKEN"
       SERVER_NAME: $SERVER_NAME
       SERVER_MOTD: $SERVER_MOTD
       SERVER_ICON: $SERVER_ICON
@@ -368,6 +369,33 @@ services:
       - "traefik.http.routers.icon.rule=Host(`icon.workadventure.localhost`)"
       - "traefik.http.routers.icon.entryPoints=web"
       - "traefik.http.services.icon.loadbalancer.server.port=8080"
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.workadventure.localhost`)"
+      - "traefik.http.routers.prometheus.entryPoints=web"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3030:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.workadventure.localhost`)"
+      - "traefik.http.routers.grafana.entryPoints=web"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
   # A mock server to test OpenID connect connectivity
   oidc-server-mock:

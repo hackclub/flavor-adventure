@@ -1,0 +1,54 @@
+{
+  "dashboard": {
+    "title": "WorkAdventure Player Statistics",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Concurrent Players",
+        "type": "graph",
+        "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "workadventure_nb_sockets",
+            "legendFormat": "Total Players",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {"axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "Players", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 20, "gradientMode": "none", "lineInterpolation": "smooth", "lineWidth": 2, "pointSize": 5, "showPoints": "never", "spanNulls": false},
+            "mappings": [],
+            "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]},
+            "unit": "short"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Players by Room",
+        "type": "graph",
+        "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+        "targets": [
+          {
+            "expr": "workadventure_nb_clients_per_room",
+            "legendFormat": "{{room}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "custom": {"axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "Players", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2},
+            "unit": "short"
+          }
+        }
+      }
+    ],
+    "refresh": "5s",
+    "time": {"from": "now-1h", "to": "now"},
+    "timezone": "browser",
+    "schemaVersion": 36
+  },
+  "overwrite": true
+}
