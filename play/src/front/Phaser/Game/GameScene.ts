@@ -445,7 +445,7 @@ export class GameScene extends DirtyScene {
         this.sound.pauseOnBlur = false;
 
         this.load.on(FILE_LOAD_ERROR, (file: { src: string }) => {
-            // If we happen to be in HTTP and we are trying to load a URL in HTTPS only... (this happens only in dev environments)
+            // If we happen to be in HTTP and we are trying to load a URL in HTTPS only (dev vs prod)
             if (
                 window.location.protocol === "http:" &&
                 file.src === this.mapUrlFile &&
@@ -652,9 +652,13 @@ export class GameScene extends DirtyScene {
                     `Tilesets made of a collection of images are not supported in WorkAdventure in the Tiled map "${this.mapUrlFile}".`
                 );
             }
+            // Check if the tileset image is already a url
+            const isAbsoluteUrl = tileset.image.startsWith("http://") || tileset.image.startsWith("https://");
+            const tilesetImageUrl = isAbsoluteUrl ? tileset.image : `${mapDirUrl}/${tileset.image}`;
+
             const tilesetImage = this.Map.addTilesetImage(
                 tileset.name,
-                `${mapDirUrl}/${tileset.image}`,
+                tilesetImageUrl,
                 tileset.tilewidth,
                 tileset.tileheight,
                 tileset.margin,
@@ -663,7 +667,7 @@ export class GameScene extends DirtyScene {
             if (tilesetImage) {
                 this.Terrains.push(tilesetImage);
             } else {
-                console.warn(`Failed to add TilesetImage ${tileset.name}: ${`${mapDirUrl}/${tileset.image}`}`);
+                console.warn(`Failed to add TilesetImage ${tileset.name}: ${tilesetImageUrl}`);
             }
         });
 
@@ -1526,13 +1530,17 @@ export class GameScene extends DirtyScene {
                 return;
             }
             //TODO strategy to add access token
+            // is abs?olute url?
+            const isAbsoluteUrl = tileset.image.startsWith("http://") || tileset.image.startsWith("https://");
+            const tilesetImageUrl = isAbsoluteUrl ? tileset.image : `${url}/${tileset.image}`;
+
             if (tileset.image.includes(".svg")) {
-                this.load.svg(`${url}/${tileset.image}`, `${url}/${tileset.image}`, {
+                this.load.svg(tilesetImageUrl, tilesetImageUrl, {
                     width: tileset.imagewidth,
                     height: tileset.imageheight,
                 });
             } else {
-                this.load.image(`${url}/${tileset.image}`, `${url}/${tileset.image}`);
+                this.load.image(tilesetImageUrl, tilesetImageUrl);
             }
         });
 
@@ -2958,7 +2966,10 @@ ${escapedMessage}
 
                     this.load.once("filecomplete-json-" + eventTileset.url, () => {
                         let jsonTileset = this.cache.json.get(eventTileset.url);
-                        const imageUrl = jsonTilesetDir + "/" + jsonTileset.image;
+                        // is absolute URL?
+                        const isAbsoluteUrl =
+                            jsonTileset.image.startsWith("http://") || jsonTileset.image.startsWith("https://");
+                        const imageUrl = isAbsoluteUrl ? jsonTileset.image : jsonTilesetDir + "/" + jsonTileset.image;
 
                         this.load.image(imageUrl, imageUrl);
                         this.load.once("filecomplete-image-" + imageUrl, () => {

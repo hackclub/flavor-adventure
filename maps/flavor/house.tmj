@@ -97,7 +97,7 @@
                 {
                  "name":"exitUrl",
                  "type":"string",
-                 "value":"courtyard.tmj"
+                 "value":"../flavor/courtyard.tmj"
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -330,6 +330,11 @@
          "name":"mapName",
          "type":"string",
          "value":"Office"
+        }, 
+        {
+         "name":"script",
+         "type":"string",
+         "value":"exit-to-courtyard.js"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

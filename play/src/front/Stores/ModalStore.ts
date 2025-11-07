@@ -8,4 +8,6 @@ export const modalVisibilityStore = writable(false);
 
 export const showModalGlobalComminucationVisibilityStore = writable(false);
 
+export const showNavigationModalStore = writable(false);
+
 export const roomListVisibilityStore = writable<boolean>(false);

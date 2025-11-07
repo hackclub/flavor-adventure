@@ -29,6 +29,9 @@ export interface JitsiOptions {
     parentNode: HTMLElement;
     configOverwrite: JitsiConfig;
     interfaceConfigOverwrite: typeof defaultInterfaceConfig;
+    userInfo?: {
+        displayName?: string;
+    };
     onload?: () => void;
 }
 

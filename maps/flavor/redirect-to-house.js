@@ -9,10 +9,8 @@ WA.room.onEnterZone('redirectToOffice', () => {
     console.log('[Flavor] Slack ID:', slackId);
     
     if (slackId) {
-        const protocol = window.location.protocol;
-        const playDomain = window.location.host;
-        const targetUrl = `${protocol}//${playDomain}/_/generate/l84sooo08ss44440g0c0wccs.cooked.selfhosted.hackclub.com/${slackId}`;
-        console.log('[Flavor] Redirecting to:', targetUrl);
+        const targetUrl = `/_/global/play.workadventure.localhost/slack/${slackId}`;
+        console.log('[Flavor] Redirecting to personalized house:', targetUrl);
         WA.nav.goToRoom(targetUrl);
     } else {
         console.error('[Flavor] No Slack ID available');

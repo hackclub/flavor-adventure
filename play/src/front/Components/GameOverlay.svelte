@@ -28,6 +28,7 @@
     import bgMap from "./images/map-exemple.png";
     import defaultLoader from "./images/Workadventure.gif";
     import GlobalCommunicationModal from "./Modal/GlobalCommunicationModal.svelte";
+    import NavigationModal from "./Modal/NavigationModal.svelte";
     import Calendar from "./Calendar/Calendar.svelte";
     import TodoList from "./TodoList/TodoList.svelte";
     import FloatingUiPopupList from "./Util/FloatingUiPopupList.svelte";
@@ -94,6 +95,7 @@
         {#if $showModalGlobalComminucationVisibilityStore}
             <GlobalCommunicationModal />
         {/if}
+        <NavigationModal />
 
         <MainLayout />
     {/key}

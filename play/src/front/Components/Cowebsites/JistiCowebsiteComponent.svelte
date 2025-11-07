@@ -129,6 +129,9 @@
                         ...defaultInterfaceConfig,
                         ...actualCowebsite.jitsiInterfaceConfig,
                     },
+                    userInfo: {
+                        displayName: gameManager.getPlayerName() || undefined,
+                    },
                 };
 
                 jitsiMeetLoadedPromise = new CancelablePromise<void>((resolve) => {
