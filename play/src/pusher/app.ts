@@ -31,6 +31,7 @@ import { UserController } from "./controllers/UserController";
 import { MatrixRoomAreaController } from "./controllers/MatrixRoomAreaController";
 import { ChatLogController } from "./controllers/ChatLogController";
 import { PlayerInfoController } from "./controllers/PlayerInfoController";
+import { DynamicMapController } from "./controllers/DynamicMapController";
 
 class App {
     private readonly app: Application;
@@ -106,6 +107,7 @@ class App {
         new MatrixRoomAreaController(this.app);
         new ChatLogController(this.app);
         new PlayerInfoController(this.app);
+        new DynamicMapController(this.app);
 
         const staticOptions = {
             extensions: [
