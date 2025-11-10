@@ -65,7 +65,11 @@ export class DynamicMapController {
             // string handling to rewrite paths to absolute URLs
             const protocol = req.protocol;
             const requestHost = req.get("host") || "";
-            const mapsHost = requestHost.replace(/^play\./, "maps.");
+            // In dev: use maps.workadventure.localhost
+            // In prod: use same host (flavor-adventure.hackclub.com serves maps via /flavor)
+            const mapsHost = requestHost.includes("workadventure.localhost")
+                ? requestHost.replace(/^play\./, "maps.")
+                : requestHost;
             const mapsBaseUrl = `${protocol}://${mapsHost}/flavor`;
 
             console.log(`[DynamicMapController] Maps base URL: ${mapsBaseUrl}`);
@@ -131,10 +135,13 @@ export class DynamicMapController {
             const mapData = JSON.parse(conferenceContent);
 
             // Build the maps server URL from the request
-            // Replace play.workadventure.* with maps.workadventure.* to get the maps server
             const protocol = req.protocol;
             const requestHost = req.get("host") || "";
-            const mapsHost = requestHost.replace(/^play\./, "maps.");
+            // In dev: use maps.workadventure.localhost
+            // In prod: use same host (flavor-adventure.hackclub.com serves maps via /flavor)
+            const mapsHost = requestHost.includes("workadventure.localhost")
+                ? requestHost.replace(/^play\./, "maps.")
+                : requestHost;
             const mapsBaseUrl = `${protocol}://${mapsHost}/flavor`;
 
             console.log(`[DynamicMapController] Maps base URL: ${mapsBaseUrl}`);

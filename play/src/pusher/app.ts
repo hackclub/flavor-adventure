@@ -153,6 +153,15 @@ class App {
             })
         );
 
+        // Serve maps statically for production
+        this.app.use(
+            "/flavor",
+            express.static("/usr/src/app/maps/flavor", {
+                ...staticOptions,
+                maxAge: "1d",
+            })
+        );
+
         this.app.use(
             "collections",
             express.static(path + "/collections", {
