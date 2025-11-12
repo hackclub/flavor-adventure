@@ -664,7 +664,17 @@ export class GameScene extends DirtyScene {
             );
             return;
         }
-        const mapDirUrl = this.mapUrlFile.substring(0, this.mapUrlFile.lastIndexOf("/"));
+        let mapDirUrl = this.mapUrlFile.substring(0, this.mapUrlFile.lastIndexOf("/"));
+
+        // override base url to enforce https unless localhost
+        if (window.location.protocol === "https:" && mapDirUrl.startsWith("http://")) {
+            const urlObj = new URL(mapDirUrl);
+            const host = urlObj.hostname;
+            if (!(host === "127.0.0.1" || host === "localhost" || host.endsWith(".localhost"))) {
+                mapDirUrl = mapDirUrl.replace("http://", "https://");
+            }
+        }
+
         this.mapFile.tilesets.forEach((tileset: ITiledMapTileset) => {
             if ("source" in tileset) {
                 throw new Error(
@@ -678,7 +688,18 @@ export class GameScene extends DirtyScene {
             }
             // Check if the tileset image is already a url
             const isAbsoluteUrl = tileset.image.startsWith("http://") || tileset.image.startsWith("https://");
-            const tilesetImageUrl = isAbsoluteUrl ? tileset.image : `${mapDirUrl}/${tileset.image}`;
+            let tilesetImageUrl = isAbsoluteUrl ? tileset.image : `${mapDirUrl}/${tileset.image}`;
+
+            // If we're on HTTPS and the tileset URL is HTTP, upgrade it to HTTPS (except localhost)
+            if (window.location.protocol === "https:" && tilesetImageUrl.startsWith("http://")) {
+                const tilesetUrlObj = new URL(tilesetImageUrl);
+                const tilesetHost = tilesetUrlObj.hostname;
+                if (
+                    !(tilesetHost === "127.0.0.1" || tilesetHost === "localhost" || tilesetHost.endsWith(".localhost"))
+                ) {
+                    tilesetImageUrl = tilesetImageUrl.replace("http://", "https://");
+                }
+            }
 
             const tilesetImage = this.Map.addTilesetImage(
                 tileset.name,
@@ -1542,7 +1563,18 @@ export class GameScene extends DirtyScene {
             console.warn("Your map file seems to be invalid. Errors: ", parseResult.error);
         }*/
 
-        const url = this.mapUrlFile.substring(0, this.mapUrlFile.lastIndexOf("/"));
+        let url = this.mapUrlFile.substring(0, this.mapUrlFile.lastIndexOf("/"));
+
+        // If we're on HTTPS, ensure the base URL for tilesets is also HTTPS to avoid mixed content errors
+        if (window.location.protocol === "https:" && url.startsWith("http://")) {
+            const urlObj = new URL(url);
+            const host = urlObj.hostname;
+            // Don't upgrade localhost URLs
+            if (!(host === "127.0.0.1" || host === "localhost" || host.endsWith(".localhost"))) {
+                url = url.replace("http://", "https://");
+            }
+        }
+
         this.mapFile.tilesets.forEach((tileset) => {
             if ("source" in tileset) {
                 throw new Error(
@@ -1554,9 +1586,20 @@ export class GameScene extends DirtyScene {
                 return;
             }
             //TODO strategy to add access token
-            // is abs?olute url?
+            // is absolute url?
             const isAbsoluteUrl = tileset.image.startsWith("http://") || tileset.image.startsWith("https://");
-            const tilesetImageUrl = isAbsoluteUrl ? tileset.image : `${url}/${tileset.image}`;
+            let tilesetImageUrl = isAbsoluteUrl ? tileset.image : `${url}/${tileset.image}`;
+
+            // If we're on HTTPS and the tileset URL is HTTP, upgrade it to HTTPS (except localhost)
+            if (window.location.protocol === "https:" && tilesetImageUrl.startsWith("http://")) {
+                const tilesetUrlObj = new URL(tilesetImageUrl);
+                const tilesetHost = tilesetUrlObj.hostname;
+                if (
+                    !(tilesetHost === "127.0.0.1" || tilesetHost === "localhost" || tilesetHost.endsWith(".localhost"))
+                ) {
+                    tilesetImageUrl = tilesetImageUrl.replace("http://", "https://");
+                }
+            }
 
             if (tileset.image.includes(".svg")) {
                 this.load.svg(tilesetImageUrl, tilesetImageUrl, {

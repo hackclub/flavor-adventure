@@ -63,7 +63,8 @@ export class DynamicMapController {
             const mapData = JSON.parse(houseContent);
 
             // string handling to rewrite paths to absolute URLs
-            const protocol = req.protocol;
+            // Use X-Forwarded-Proto if available (for reverse proxies), otherwise use req.protocol
+            const protocol = req.get("X-Forwarded-Proto") || req.protocol;
             const requestHost = req.get("host") || "";
             // In dev: use maps.workadventure.localhost
             // In prod: use same host (flavor-adventure.hackclub.com serves maps via /flavor)
@@ -138,7 +139,8 @@ export class DynamicMapController {
             const mapData = JSON.parse(conferenceContent);
 
             // Build the maps server URL from the request
-            const protocol = req.protocol;
+            // Use X-Forwarded-Proto if available (for reverse proxies), otherwise use req.protocol
+            const protocol = req.get("X-Forwarded-Proto") || req.protocol;
             const requestHost = req.get("host") || "";
             // In dev: use maps.workadventure.localhost
             // In prod: use same host (flavor-adventure.hackclub.com serves maps via /flavor)
