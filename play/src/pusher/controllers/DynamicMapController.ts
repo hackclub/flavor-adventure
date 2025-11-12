@@ -82,8 +82,9 @@ export class DynamicMapController {
                         !tileset.image.startsWith("http://") &&
                         !tileset.image.startsWith("https://")
                     ) {
-                        // Convert relative path to absolute URL
-                        tileset.image = `${mapsBaseUrl}/${tileset.image}`;
+                        // Convert relative path to absolute URL, removing ../ and ./
+                        const imgPath = tileset.image.replace(/^\.\.\//, "").replace(/^\.\//, "");
+                        tileset.image = `${mapsBaseUrl}/${imgPath}`;
                     }
                 }
             }
@@ -96,7 +97,8 @@ export class DynamicMapController {
                         !prop.value.startsWith("http://") &&
                         !prop.value.startsWith("https://")
                     ) {
-                        prop.value = `${mapsBaseUrl}/${prop.value}`;
+                        const imgPath = prop.value.replace(/^\.\.\//, "").replace(/^\.\//, "");
+                        prop.value = `${mapsBaseUrl}/${imgPath}`;
                     }
 
                     if (
@@ -105,7 +107,8 @@ export class DynamicMapController {
                         !prop.value.startsWith("http://") &&
                         !prop.value.startsWith("https://")
                     ) {
-                        prop.value = `${mapsBaseUrl}/${prop.value}`;
+                        const scriptPath = prop.value.replace(/^\.\.\//, "").replace(/^\.\//, "");
+                        prop.value = `${mapsBaseUrl}/${scriptPath}`;
                     }
                 }
             }
