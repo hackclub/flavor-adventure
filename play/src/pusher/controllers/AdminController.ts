@@ -6,6 +6,7 @@ import Debug from "debug";
 import { apiClientRepository } from "../services/ApiClientRepository";
 import { adminToken } from "../middlewares/AdminToken";
 import { validatePostQuery } from "../services/QueryValidator";
+import { redisClient } from "../services/RedisClient";
 import { BaseHttpController } from "./BaseHttpController";
 
 const debug = Debug("pusher:requests");
@@ -479,6 +480,9 @@ export class AdminController extends BaseHttpController {
                 });
 
                 await Promise.all(banPromises);
+
+                // Force kill the user's active session via Redis
+                await redisClient.forceKillSession(recipientUuid);
 
                 res.send({ ok: true, bannedFromRooms: bannedFromCount });
             } catch (err) {

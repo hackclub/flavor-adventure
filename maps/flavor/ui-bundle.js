@@ -272,34 +272,37 @@ WA.onInit().then(async () => {
     
     // detect on event and check current pos
     let isInExitZone = false;
-    let exitPopup = undefined;
+    let exitMessage = undefined;
+    let exitMessageDismissed = false;
     
     let isInExitZone2 = false;
-    let exitPopup2 = undefined;
+    let exitMessage2 = undefined;
+    let exitMessage2Dismissed = false;
     
-    
-    const DEATH_ZONE_Y = 128; // 
+    const DEATH_ZONE_Y = 128;
     let isInDeathZone = false;
-    let deathPopup = undefined;
+    let deathMessage = undefined;
+    let deathMessageDismissed = false;
 
     WA.player.onPlayerMove((event) => {
         const playerY = event.y;
         
-        // Exit logic
+        // Exit logic - zone 1 (closest to exit)
         const inExitZone = (playerY <= (EXIT_AREA_Y + EXIT_AREA_HEIGHT));
         
         if (inExitZone) {
             if (!isInExitZone) {
                 isInExitZone = true;
+                exitMessageDismissed = false; // Reset when re-entering zone
                 if (!WA.player.isLogged) {
-                    if (exitPopup === undefined) {
-                        exitPopup = WA.ui.openPopup("popupTarget", "Lets get you a fresh start, click log in to choose who you will become", [{
-                            label: "Close",
-                            callback: (popup) => {
-                                popup.close();
-                                exitPopup = undefined;
+                    if (exitMessage === undefined && !exitMessageDismissed) {
+                        exitMessage = WA.ui.displayActionMessage({
+                            message: "Lets get you a fresh start, click log in to choose who you will become",
+                            callback: () => {
+                                exitMessage = undefined;
+                                exitMessageDismissed = true;
                             }
-                        }]);
+                        });
                     }
                 } else {
                     console.log(`redir`);
@@ -307,26 +310,31 @@ WA.onInit().then(async () => {
                 }
             }
         } else {
-            isInExitZone = false;
-            if (exitPopup) {
-                exitPopup.close();
-                exitPopup = undefined;
+            if (isInExitZone) {
+                isInExitZone = false;
+                if (exitMessage) {
+                    exitMessage.remove();
+                    exitMessage = undefined;
+                }
             }
         }
+        
+        // Exit logic - zone 2 (further from exit)
         const inExitZone2 = (playerY <= (EXIT_AREA_Y + EXIT_AREA_HEIGHT*4)) && !inExitZone;
         
         if (inExitZone2) {
             if (!isInExitZone2) {
                 isInExitZone2 = true;
+                exitMessage2Dismissed = false; // Reset when re-entering zone
                 if (!WA.player.isLogged) {
-                    if (exitPopup2 === undefined) {
-                        exitPopup2 = WA.ui.openPopup("popupTarget2", "If you promise to use your life with passion and build cool stuff, I'll let you come back to the world of flavortown.", [{
-                            label: "Close",
-                            callback: (popup) => {
-                                popup.close();
-                                exitPopup2 = undefined;
+                    if (exitMessage2 === undefined && !exitMessage2Dismissed) {
+                        exitMessage2 = WA.ui.displayActionMessage({
+                            message: "If you promise to use your life with passion and build cool stuff, I'll let you come back to the world of flavortown.",
+                            callback: () => {
+                                exitMessage2 = undefined;
+                                exitMessage2Dismissed = true;
                             }
-                        }]);
+                        });
                     }
                 } else {
                     console.log(`redir`);
@@ -334,33 +342,39 @@ WA.onInit().then(async () => {
                 }
             }
         } else {
-            isInExitZone2 = false;
-            if (exitPopup2) {
-                exitPopup2.close();
-                exitPopup2 = undefined;
+            if (isInExitZone2) {
+                isInExitZone2 = false;
+                if (exitMessage2) {
+                    exitMessage2.remove();
+                    exitMessage2 = undefined;
+                }
             }
         }
+        
         // Death zone logic
         const inDeathZone = playerY >= DEATH_ZONE_Y;
 
         if (inDeathZone) {
             if (!isInDeathZone) {
                 isInDeathZone = true;
-                if (deathPopup === undefined) {
-                    deathPopup = WA.ui.openPopup("deathPopupTarget", "Uh Oh! Your dead :/ Right now you can't speak to others or explore beyond your graveyard, maybe someone inside could help...", [{
-                        label: "Explore",
-                        callback: (popup) => {
-                            popup.close();
-                            deathPopup = undefined;
+                deathMessageDismissed = false;
+                if (deathMessage === undefined && !deathMessageDismissed) {
+                    deathMessage = WA.ui.displayActionMessage({
+                        message: "Uh Oh! You're dead :/ Right now you can't speak to others or explore beyond your graveyard, maybe someone inside could help...",
+                        callback: () => {
+                            deathMessage = undefined;
+                            deathMessageDismissed = true;
                         }
-                    }]);
+                    });
                 }
             }
         } else {
-            isInDeathZone = false;
-            if (deathPopup) {
-                deathPopup.close();
-                deathPopup = undefined;
+            if (isInDeathZone) {
+                isInDeathZone = false;
+                if (deathMessage) {
+                    deathMessage.remove();
+                    deathMessage = undefined;
+                }
             }
         }
     });
@@ -368,19 +382,17 @@ WA.onInit().then(async () => {
     console.log('Exit zone monitoring active - watching for Y position <', EXIT_AREA_Y + EXIT_AREA_HEIGHT);
     
     
-    // const currentPos = await WA.player.getPosition();
-    // console.log('Current player position:', currentPos);
     if (currentPos.y <= (EXIT_AREA_Y + EXIT_AREA_HEIGHT)) {
         if (!WA.player.isLogged) {
             isInExitZone = true;
-             if (exitPopup === undefined) {
-                exitPopup = WA.ui.openPopup("popupTarget", "Please log in to exit.", [{
-                    label: "Close",
-                    callback: (popup) => {
-                        popup.close();
-                        exitPopup = undefined;
+            if (exitMessage === undefined) {
+                exitMessage = WA.ui.displayActionMessage({
+                    message: "Lets get you a fresh start, click log in to choose who you will become",
+                    callback: () => {
+                        exitMessage = undefined;
+                        exitMessageDismissed = true;
                     }
-                }]);
+                });
             }
         } else {
             console.log('player in zone');

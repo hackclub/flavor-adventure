@@ -233,7 +233,24 @@ export class SocketManager implements ZoneEventListener {
     async handleJoinRoom(client: Socket): Promise<void> {
         const socketData = client.getUserData();
         const viewport = socketData.viewport;
+
+        // Generate unique socket ID for each connection
+        const socketId = redisClient.generateSocketId();
+        // Store it for clean up later
+        (socketData as SocketData & { sessionSocketId?: string }).sessionSocketId = socketId;
+
         try {
+            if (socketData.isLogged) {
+                await redisClient.registerSession(socketData.userUuid, socketId, (userUuid) => {
+                    console.info(`Session kill requested for user ${userUuid}, closing connection`);
+                    this.closeWebsocketConnection(client, 4000, "Session replaced by new login");
+                });
+                // Small delay to allow old session to be cleaned up
+                await new Promise<void>((resolve) => {
+                    setTimeout(resolve, 150);
+                });
+            }
+
             const joinRoomMessage: JoinRoomMessage = {
                 userUuid: socketData.userUuid,
                 IPAddress: socketData.ipAddress,
@@ -326,12 +343,9 @@ export class SocketManager implements ZoneEventListener {
                 },
             };
 
-            // Check if user is already online (only for logged in users)
+            // Set user online in Redis if logged in
             if (socketData.isLogged) {
-                // Only set user online if they are not anonymous
-                if (!socketData.userUuid.startsWith("00000")) {
-                    await redisClient.setUserOnline(socketData.userUuid);
-                }
+                await redisClient.setUserOnline(socketData.userUuid);
             }
 
             streamToBack.write(pusherToBackMessage);
@@ -445,6 +459,15 @@ export class SocketManager implements ZoneEventListener {
                 redisClient.setUserOffline(socketData.userUuid).catch((e) => {
                     console.error("Error while removing user from redis", e);
                 });
+                // Unregister session so another login can take over
+                if (!socketData.userUuid.startsWith("00000")) {
+                    const sessionSocketId = (socketData as SocketData & { sessionSocketId?: string }).sessionSocketId;
+                    if (sessionSocketId) {
+                        redisClient.unregisterSession(socketData.userUuid, sessionSocketId).catch((e) => {
+                            console.error("Error while unregistering session from redis", e);
+                        });
+                    }
+                }
             }
         } catch (e) {
             Sentry.captureException(e);

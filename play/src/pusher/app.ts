@@ -68,6 +68,7 @@ class App {
                     "Cache-Control",
                     "baggage",
                     "sentry-trace",
+                    "admin-token",
                 ],
                 credentials: true,
             })

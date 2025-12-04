@@ -696,6 +696,17 @@ export class RoomConnection implements RoomConnection {
             clearTimeout(this.timeout);
         }
 
+        // Code 4000 = session replaced by user on another tab, do not relogin
+        if (event.code === 4000) {
+            console.info("Session replaced by new login - not reconnecting");
+            this._closed = true;
+            this.cleanupConnection(true); // Treat as normal closure
+
+            alert("You are signed in on several tabs/places, please close all but one.");
+            window.close();
+            return;
+        }
+
         // If we are not connected yet (if a JoinRoomMessage was not sent), we need to retry.
         if (this.userId === null && !this._closed) {
             this._connectionErrorStream.next(event);
